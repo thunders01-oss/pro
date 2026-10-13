@@ -1,0 +1,73 @@
+Q1. Load the Titanic dataset (titanic.csv) Create a histogram showing the number of passengers in 
+each passenger class. Create a Pie Chart showing the survival distribution.
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load dataset
+data = pd.read_csv('titanic.csv')
+
+# Histogram of passenger class
+plt.hist(data['Pclass'], bins=[0.5, 1.5, 2.5, 3.5],
+         color='skyblue', edgecolor='black')
+
+plt.xlabel('Passenger Class')
+plt.ylabel('Number of Passengers')
+plt.title('Passengers in Each Class')
+plt.show()
+
+# Pie chart of survival
+data['Survived'].value_counts().plot(
+    kind='pie', labels=['Not Survived', 'Survived'],
+    autopct='%1.1f%%', colors=['lightcoral', 'lightgreen']
+)
+
+plt.title('Survival Distribution')
+plt.ylabel('')
+plt.show()
+
+
+
+
+
+
+Q2 Use the K-Nearest Neighbors (KNN) algorithm to classify emails as spam or non-spam using the 
+Spambase dataset. Preprocess the data, train the KNN classifier, and evaluate its performance 
+using accuracy, confusion matrix, precision, recall, and F1-score.
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+data = pd.read_csv('spambase.csv', header=None)
+
+data = data.dropna()
+
+X = data.iloc[:, :-1]
+y = data.iloc[:, -1]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Scale data
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, y_train)
+
+
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+print("F1-Score:", f1_score(y_test, y_pred))

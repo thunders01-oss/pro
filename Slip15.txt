@@ -1,0 +1,86 @@
+Q1. Write a Python program to create an age_records DataFrame containing the attributes Person_ID 
+and Age for suitable sample records. Perform Data Discretization on the Age attribute using 
+Equal Frequency Binning. Display the original and discretized data.
+
+
+import pandas as pd
+
+# Create DataFrame
+age_records = pd.DataFrame({
+    'Person_ID': [1, 2, 3, 4, 5, 6, 7, 8],
+    'Age': [18, 22, 25, 28, 32, 35, 40, 45]
+})
+
+print("Original Data:")
+print(age_records)
+
+# Equal Frequency Binning (4 bins)
+age_records['Age_Bin'] = pd.qcut(
+    age_records['Age'],
+    q=4,
+    labels=['Bin1', 'Bin2', 'Bin3', 'Bin4']
+)
+
+print("\nDiscretized Data:")
+print(age_records)
+
+
+
+
+
+
+Q2. Create a DataFrame containing information about different cities with the attributes City, Area 
+(sq. km), Average Temperature (°C), Rainfall (mm), and Population Density. Generate a
+Treemap to visualize the population density of each city and create a 3D Scatter Plot using Area, 
+Average Temperature, and Rainfall. Add suitable labels, colors, and titles to both visualizations.
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import squarify
+
+data = {
+    'City': ['Mumbai', 'Pune', 'Nashik', 'Nagpur', 'Thane'],
+    'Area': [603, 331, 259, 218, 147],
+    'Temperature': [30, 27, 28, 32, 29],
+    'Rainfall': [2200, 900, 700, 1100, 2500],
+    'Population_Density': [20000, 5500, 6000, 3500, 16000]
+}
+
+df = pd.DataFrame(data)
+
+print("City Data:")
+print(df)
+
+
+plt.figure(figsize=(8, 5))
+squarify.plot(
+    sizes=df['Population_Density'],
+    label=df['City'],
+    color=['red', 'blue', 'green', 'orange', 'purple'],
+    alpha=0.7
+)
+plt.title("Population Density of Cities")
+plt.axis('off')
+plt.show()
+
+
+fig = plt.figure(figsize=(8, 5))
+ax = fig.add_subplot(111, projection='3d')
+
+scatter = ax.scatter(
+    df['Area'],
+    df['Temperature'],
+    df['Rainfall'],
+    c=df['Population_Density'],
+    cmap='viridis',
+    s=100
+)
+
+ax.set_xlabel('Area (sq. km)')
+ax.set_ylabel('Average Temperature (°C)')
+ax.set_zlabel('Rainfall (mm)')
+ax.set_title('3D Scatter Plot of Cities')
+
+plt.colorbar(scatter, label='Population Density')
+plt.show()

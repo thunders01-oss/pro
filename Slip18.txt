@@ -1,0 +1,110 @@
+Q1. Write a Python program to create an employee_data DataFrame with the attributes: Emp_ID, 
+Age, Dept, Years_Experience, and Performance_Rating. Perform data cleaning by handling
+missing values, remove duplicate records and detecting outliers using the IQR method.
+
+
+
+import pandas as pd
+
+# Create Employee DataFrame
+data = {
+    'Emp_ID': [1, 2, 3, 4, 4, 6, 7],
+    'Age': [25, 30, None, 40, 40, 35, 100],
+    'Dept': ['IT', 'HR', 'IT', 'Sales', 'Sales', 'HR', 'IT'],
+    'Years_Experience': [2, 5, 4, 10, 10, None, 50],
+    'Performance_Rating': [4, 3, 5, 4, 4, 3, 5]
+}
+
+employee_data = pd.DataFrame(data)
+
+print("Original Data:")
+print(employee_data)
+
+# 1. Handle Missing Values
+employee_data['Age'] = employee_data['Age'].fillna(
+    employee_data['Age'].mean()
+)
+employee_data['Years_Experience'] = employee_data['Years_Experience'].fillna(
+    employee_data['Years_Experience'].mean()
+)
+
+# 2. Remove Duplicate Records
+employee_data = employee_data.drop_duplicates()
+
+print("\nAfter Handling Missing Values and Duplicates:")
+print(employee_data)
+
+# 3. Detect Outliers using IQR
+Q1 = employee_data['Years_Experience'].quantile(0.25)
+Q3 = employee_data['Years_Experience'].quantile(0.75)
+
+IQR = Q3 - Q1
+
+lower = Q1 - 1.5 * IQR
+upper = Q3 + 1.5 * IQR
+
+outliers = employee_data[
+    (employee_data['Years_Experience'] < lower) |
+    (employee_data['Years_Experience'] > upper)
+]
+
+print("\nOutliers:")
+print(outliers)
+
+
+
+
+
+
+Q2. Consider the World Cities dataset containing attributes - city, country, latitude, longitude, and 
+population information. Perform the following tasks:
+a. Create a Geospatial Visualization showing the locations of cities on a world map, using 
+marker size to represent population.
+b. Create a Treemap to visualize the population distribution of cities.
+
+
+
+import pandas as pd
+import plotly.express as px
+import matplotlib.pyplot as plt
+import squarify
+
+# Create World Cities Dataset
+data = {
+    'city': ['Mumbai', 'London', 'New York', 'Tokyo', 'Delhi'],
+    'country': ['India', 'UK', 'USA', 'Japan', 'India'],
+    'latitude': [19.07, 51.50, 40.71, 35.68, 28.61],
+    'longitude': [72.87, -0.12, -74.00, 139.69, 77.20],
+    'population': [12500000, 9000000, 8800000, 14000000, 16700000]
+}
+
+df = pd.DataFrame(data)
+
+print("World Cities Data:")
+print(df)
+
+# a) Geospatial Visualization
+fig = px.scatter_geo(
+    df,
+    lat='latitude',
+    lon='longitude',
+    hover_name='city',
+    size='population',
+    color='country',
+    title='World Cities Population Map'
+)
+
+fig.show()
+
+# b) Treemap
+plt.figure(figsize=(8, 5))
+
+squarify.plot(
+    sizes=df['population'],
+    label=df['city'],
+    alpha=0.7
+)
+
+plt.title('Population Distribution of World Cities')
+plt.axis('off')
+plt.show()

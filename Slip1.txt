@@ -1,0 +1,60 @@
+Q1. Create a dataframe containing information about different products such as Price, Rating, and 
+Number of Sales. Generate a Dendrogram to group similar products based on their characteristics.
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+# Create dataframe
+data = {
+    'Price': [100, 200, 150, 500, 600],
+    'Rating': [4.1, 4.5, 4.0, 4.8, 4.9],
+    'Sales': [50, 80, 60, 200, 250]
+}
+
+df = pd.DataFrame(data)
+print(df)
+
+# Create linkage
+Z = linkage(df, method='ward')
+
+# Plot dendrogram
+dendrogram(Z)
+plt.title("Product Dendrogram")
+plt.xlabel("Products")
+plt.ylabel("Distance")
+plt.show()
+
+
+
+
+Q2. Using the built-in Iris dataset, apply K-Means clustering with K = 3. Plot the datapoints, visualize 
+the clusters with different colors, and display the cluster centroids.
+
+
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.cluster import KMeans
+
+# Load Iris dataset
+iris = load_iris()
+X = iris.data
+
+# Apply K-Means
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+y = kmeans.fit_predict(X)
+
+# Plot clusters
+plt.scatter(X[:, 0], X[:, 1], c=y, cmap='rainbow')
+
+# Plot centroids
+plt.scatter(kmeans.cluster_centers_[:, 0],
+            kmeans.cluster_centers_[:, 1],
+            color='black', marker='X', s=200,
+            label='Centroids')
+
+plt.title("K-Means Clustering (K=3)")
+plt.xlabel("Sepal Length")
+plt.ylabel("Sepal Width")
+plt.legend()
+plt.show()

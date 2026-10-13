@@ -1,0 +1,80 @@
+Q1. Write a Python program to create a book_records DataFrame containing the attributes Book_ID 
+and Book_Price for suitable sample records. Perform Data Discretization on the Book_Price 
+attribute using Equal Width Binning. Display the original and discretized data.
+
+
+
+import pandas as pd
+
+data = {
+    'Book_ID': [1, 2, 3, 4, 5, 6],
+    'Book_Price': [100, 200, 300, 400, 500, 600]
+}
+
+df = pd.DataFrame(data)
+
+print("Original Data:")
+print(df)
+
+# Equal Width Binning
+df['Price_Bin'] = pd.cut(df['Book_Price'], bins=3,
+                         labels=['Low', 'Medium', 'High'])
+
+print("\nDiscretized Data:")
+print(df)
+
+
+
+
+
+
+
+
+Q2. Consider the World Cities dataset containing attributes city, country, latitude, longitude, and 
+population information. Perform the following visualization tasks :
+a. Create a Geospatial Visualization showing the locations of cities on a world map, using 
+marker size to represent population.
+b. Create a Treemap to visualize the population distribution of cities
+
+
+
+
+import pandas as pd
+import plotly.express as px
+import matplotlib.pyplot as plt
+import squarify
+
+data = {
+    'city': ['Mumbai', 'London', 'Tokyo', 'New York', 'Paris'],
+    'country': ['India', 'UK', 'Japan', 'USA', 'France'],
+    'latitude': [19.07, 51.50, 35.68, 40.71, 48.85],
+    'longitude': [72.87, -0.12, 139.69, -74.00, 2.35],
+    'population': [12400000, 8900000, 13900000, 8800000, 2100000]
+}
+
+df = pd.DataFrame(data)
+
+# a) Geospatial Visualization
+fig = px.scatter_geo(
+    df,
+    lat='latitude',
+    lon='longitude',
+    hover_name='city',
+    size='population',
+    color='country',
+    title='World Cities Population'
+)
+fig.show()
+
+# b) Treemap
+plt.figure(figsize=(8, 5))
+
+squarify.plot(
+    sizes=df['population'],
+    label=df['city'],
+    alpha=0.7
+)
+
+plt.title('Population Distribution of World Cities')
+plt.axis('off')
+plt.show()

@@ -1,0 +1,95 @@
+Q1. Write a Python program to create two DataFrames, student_details and academic_records, 
+containing suitable student-related attributes. Perform data integration by combining the two 
+DataFrames using a common attribute such as Student_ID. Display the individual DataFrames 
+and the integrated DataFrame.
+
+
+
+import pandas as pd
+
+# Student Details
+student_details = pd.DataFrame({
+    'Student_ID': [1, 2, 3, 4],
+    'Name': ['Amit', 'Rahul', 'Sneha', 'Priya'],
+    'Age': [20, 21, 19, 20]
+})
+
+# Academic Records
+academic_records = pd.DataFrame({
+    'Student_ID': [1, 2, 3, 4],
+    'Course': ['BCS', 'BCS', 'BCA', 'BCS'],
+    'Marks': [85, 78, 90, 88]
+})
+
+print("Student Details:")
+print(student_details)
+
+print("\nAcademic Records:")
+print(academic_records)
+
+# Data Integration
+integrated_data = pd.merge(
+    student_details, academic_records, on='Student_ID'
+)
+
+print("\nIntegrated DataFrame:")
+print(integrated_data)
+
+
+
+
+Q2. Create a dataset containing information about different cities with the attributes: City, Population, 
+GDP, and Literacy Rate. Perform the following visualization tasks:
+a. Generate a Treemap showing city-wise population distribution.
+b. Create a 3D Scatter Plot using Population, GDP, and Literacy Rate.
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import squarify
+
+# Create Dataset
+data = {
+    'City': ['Mumbai', 'Pune', 'Nashik', 'Nagpur', 'Thane'],
+    'Population': [12500000, 7000000, 1800000, 2900000, 1900000],
+    'GDP': [310, 70, 25, 35, 45],
+    'Literacy_Rate': [89, 91, 88, 90, 90]
+}
+
+df = pd.DataFrame(data)
+
+print("City Data:")
+print(df)
+
+# a) Treemap
+plt.figure(figsize=(8, 5))
+
+squarify.plot(
+    sizes=df['Population'],
+    label=df['City'],
+    color=['red', 'blue', 'green', 'orange', 'purple'],
+    alpha=0.7
+)
+
+plt.title("City-wise Population Distribution")
+plt.axis('off')
+plt.show()
+
+# b) 3D Scatter Plot
+fig = plt.figure(figsize=(8, 5))
+ax = fig.add_subplot(111, projection='3d')
+
+ax.scatter(
+    df['Population'],
+    df['GDP'],
+    df['Literacy_Rate'],
+    color='blue',
+    s=100
+)
+
+ax.set_xlabel('Population')
+ax.set_ylabel('GDP')
+ax.set_zlabel('Literacy Rate')
+ax.set_title("3D Scatter Plot of Cities")
+
+plt.show()

@@ -1,0 +1,83 @@
+Q1. Create a dataframe using weather.csv containing values of Temperature, Humidity, Rainfall, and 
+Wind Speed. Generate a Heat Map to visualize the correlation between these weather parameters.
+
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Read CSV file
+df = pd.read_csv('weather.csv')
+
+# Select weather attributes
+data = df[['Temperature', 'Humidity', 'Rainfall', 'Wind Speed']]
+
+# Calculate correlation
+corr = data.corr()
+
+print("Correlation Matrix:")
+print(corr)
+
+# Generate Heat Map
+sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f')
+
+plt.title("Weather Parameters Correlation Heat Map")
+plt.show()
+
+
+
+
+
+
+Q2. Apply the K-Means Clustering algorithm to the given student dataset using Attendance and 
+Marks as the input attributes. Perform the required data preprocessing, set K = 3, assign the 
+students to the respective clusters, and visualize the clusters and their centroids using a suitable 
+scatter plot.
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Create student dataset
+data = {
+    'Attendance': [40, 45, 50, 60, 65, 70, 80, 85, 90],
+    'Marks': [35, 40, 45, 55, 60, 65, 75, 85, 90]
+}
+
+df = pd.DataFrame(data)
+
+print("Original Student Data:")
+print(df)
+
+# Data preprocessing
+scaler = StandardScaler()
+X = scaler.fit_transform(df[['Attendance', 'Marks']])
+
+# Apply K-Means with K = 3
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+df['Cluster'] = kmeans.fit_predict(X)
+
+print("\nStudents with Cluster Labels:")
+print(df)
+
+# Convert centroids back to original scale
+centers = scaler.inverse_transform(kmeans.cluster_centers_)
+
+print("\nCluster Centroids:")
+print(centers)
+
+# Visualize clusters
+plt.scatter(df['Attendance'], df['Marks'],
+            c=df['Cluster'], cmap='viridis', s=100)
+
+plt.scatter(centers[:, 0], centers[:, 1],
+            color='red', marker='X', s=200, label='Centroids')
+
+plt.xlabel('Attendance')
+plt.ylabel('Marks')
+plt.title('K-Means Clustering of Students (K=3)')
+plt.legend()
+plt.show()

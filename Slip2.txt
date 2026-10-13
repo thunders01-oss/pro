@@ -1,0 +1,75 @@
+Q1. Write a Python program to create an age_records DataFrame containing the attributes Person_ID 
+and Age for suitable sample records. Perform Data Discretization on the Age attribute using 
+Equal Width Binning. Display the original and discretized data.
+
+
+
+import pandas as pd
+
+# Create DataFrame
+age_records = pd.DataFrame({
+    'Person_ID': [1, 2, 3, 4, 5, 6],
+    'Age': [12, 18, 25, 32, 45, 60]
+})
+
+print("Original Data:")
+print(age_records)
+
+# Equal Width Binning
+age_records['Age_Group'] = pd.cut(
+    age_records['Age'],
+    bins=3,
+    labels=['Young', 'Middle', 'Old']
+)
+
+print("\nDiscretized Data:")
+print(age_records)
+
+
+
+
+
+
+Q2. Apply Linear Regression on a YouTube Video dataset to predict video views using relevant video 
+attributes. Visualize the relationship between the predictor and target variable using a scatter plot 
+and regression line.
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Create YouTube dataset
+data = {
+    'Likes': [100, 200, 300, 400, 500, 600, 700],
+    'Views': [1000, 2000, 2800, 4000, 4800, 6000, 6800]
+}
+
+df = pd.DataFrame(data)
+
+print("YouTube Dataset:")
+print(df)
+
+# Select predictor and target
+X = df[['Likes']]
+y = df['Views']
+
+# Apply Linear Regression
+model = LinearRegression()
+model.fit(X, y)
+
+# Predict views
+predicted_views = model.predict(X)
+
+print("\nPredicted Views:")
+print(predicted_views)
+
+# Visualize data
+plt.scatter(X, y, color='blue', label='Actual Views')
+plt.plot(X, predicted_views, color='red', label='Regression Line')
+
+plt.xlabel('Likes')
+plt.ylabel('Views')
+plt.title('YouTube Views Prediction')
+plt.legend()
+plt.show()

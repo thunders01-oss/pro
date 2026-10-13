@@ -1,0 +1,76 @@
+Q1. A survey was conducted to determine the preferred payment method among customers as shown 
+below:
+payment_methods = ["UPI", "Credit Card", "Debit Card", "Cash", "Net Banking"] 
+customers = [150, 80, 60, 40, 30]
+Create a Pie Chart to represent the percentage of customers using each payment method. Display 
+the percentage contribution of each category and add an appropriate title.
+
+
+
+import matplotlib.pyplot as plt
+
+payment_methods = ["UPI", "Credit Card", "Debit Card",
+                   "Cash", "Net Banking"]
+customers = [150, 80, 60, 40, 30]
+
+plt.pie(customers, labels=payment_methods,
+        autopct='%1.1f%%', startangle=90)
+
+plt.title("Preferred Payment Methods")
+plt.show()
+
+
+
+
+
+
+Q2. Apply the K-Means Clustering algorithm on the given E-commerce Customer dataset. Read the 
+dataset using Python, inspect and preprocess the data by handling missing values and selecting 
+suitable numerical features. Apply K-Means clustering to segment the customers into different 
+categories and interpret the resulting clusters.
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Read dataset
+df = pd.read_csv("Ecommerce.csv")
+
+# Inspect data
+print(df.head())
+print(df.isnull().sum())
+
+# Select numerical features
+X = df[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']]
+
+# Handle missing values
+X = X.fillna(X.mean())
+
+# Standardize data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply K-Means
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+df['Cluster'] = kmeans.fit_predict(X_scaled)
+
+# Display clusters
+print(df[['Age', 'Annual Income (k$)',
+          'Spending Score (1-100)', 'Cluster']].head())
+
+# Visualize clusters
+plt.scatter(X_scaled[:, 1], X_scaled[:, 2],
+            c=df['Cluster'], cmap='rainbow')
+
+plt.xlabel("Annual Income")
+plt.ylabel("Spending Score")
+plt.title("E-commerce Customer Clusters")
+plt.show()
+
+# Interpret clusters
+print(df.groupby('Cluster')[
+    ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+].mean())

@@ -1,0 +1,74 @@
+Q1. Write a Python program to create a product DataFrame with the attributes Product_ID, Price, 
+Quantity_Sold, Discount, and Revenue. Apply Min-Max Scaling data transformation techniques 
+on the DataFrame and display the transformed data.
+
+
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+data = {
+    'Product_ID': [1, 2, 3, 4, 5],
+    'Price': [100, 200, 300, 400, 500],
+    'Quantity_Sold': [10, 20, 30, 40, 50],
+    'Discount': [5, 10, 15, 20, 25],
+    'Revenue': [950, 3600, 7650, 12800, 18750]
+}
+
+df = pd.DataFrame(data)
+
+print("Original Data:")
+print(df)
+
+scaler = MinMaxScaler()
+scaled_data = scaler.fit_transform(df)
+
+df_scaled = pd.DataFrame(scaled_data, columns=df.columns)
+
+print("\nTransformed Data:")
+print(df_scaled)
+
+
+
+
+
+
+Q2. Apply Logistic Regression to classify smartphones into different price categories using 
+specifications such as RAM, storage, battery capacity, and camera resolution. Assess the model 
+using Accuracy, F1-Score, and Confusion Matrix.
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, f1_score, confusion_matrix
+
+data = {
+    'RAM': [2, 3, 4, 4, 6, 6, 8, 8, 12, 12],
+    'Storage': [32, 32, 64, 128, 64, 128, 128, 256, 256, 512],
+    'Battery': [3000, 3500, 4000, 4500, 4000, 5000, 4500, 5000, 5000, 6000],
+    'Camera': [8, 12, 13, 16, 24, 32, 48, 50, 64, 108],
+    'Price_Category': [
+        'Low', 'Low', 'Low', 'Medium', 'Medium',
+        'Medium', 'High', 'High', 'High', 'High'
+    ]
+}
+
+df = pd.DataFrame(data)
+
+X = df[['RAM', 'Storage', 'Battery', 'Camera']]
+y = df['Price_Category']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("F1-Score:", f1_score(y_test, y_pred, average='weighted'))
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))

@@ -1,0 +1,77 @@
+Q1. A company conducted a survey to determine the preferred mode of transportation among 
+employees as shown below:
+transport = [“Train", "Bicycle", "Bike", "Car", "Bus"], 
+employees = [220, 60, 70, 80, 40]
+Create a Pie Chart to represent the percentage of employees using each mode of transportation. 
+Display the percentage contribution of each category. Give appropriate labels and colors.
+
+
+
+import matplotlib.pyplot as plt
+
+transport = ["Train", "Bicycle", "Bike", "Car", "Bus"]
+employees = [220, 60, 70, 80, 40]
+
+colors = ["red", "green", "blue", "orange", "purple"]
+
+plt.pie(employees, labels=transport, colors=colors,
+        autopct="%1.1f%%", startangle=90)
+
+plt.title("Employee Transportation Preferences")
+plt.show()
+
+
+
+
+Q2. Using the given housing dataset, develop a Random Forest Regression model to predict house 
+prices based on the available property attributes. Perform the necessary data preprocessing, train 
+and test the model, and evaluate its predictive performance using Mean Absolute Error (MAE), 
+Root Mean Squared Error (RMSE), and R² Score.
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error, r2_score
+import numpy as np
+
+data = {
+    'Area': [1000, 1200, 1500, 1800, 2000, 2200, 2500, 2800, 3000, 3200],
+    'Bedrooms': [2, 2, 3, 3, 3, 4, 4, 4, 5, 5],
+    'Bathrooms': [1, 2, 2, 2, 3, 3, 3, 4, 4, 4],
+    'Age': [10, 8, 5, 7, 4, 6, 3, 2, 1, 2],
+    'Price': [20, 25, 35, 40, 45, 50, 60, 70, 80, 85]
+}
+
+df = pd.DataFrame(data)
+
+# Data preprocessing
+df = df.dropna()
+
+X = df[['Area', 'Bedrooms', 'Bathrooms', 'Age']]
+y = df['Price']
+
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Create and train the model
+model = RandomForestRegressor(random_state=42)
+model.fit(X_train, y_train)
+
+# Predict house prices
+y_pred = model.predict(X_test)
+
+print("Actual Prices:", list(y_test))
+print("Predicted Prices:", y_pred)
+
+# Evaluate the model
+print("MAE:", mean_absolute_error(y_test, y_pred))
+
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+print("RMSE:", rmse)
+
+print("R2 Score:", r2_score(y_test, y_pred))

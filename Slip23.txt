@@ -1,0 +1,76 @@
+Q1 Create a DataFrame containing information about different products with attributes such
+as Product_name, Price, Rating, and Number_of_Sales. Generate a Dendrogram to identify 
+groups of similar products. Display a suitable title and labels for the Dendrogram.
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+data = {
+    'Product_name': ['Mobile', 'Laptop', 'Tablet', 'TV', 'Watch'],
+    'Price': [15000, 60000, 20000, 40000, 5000],
+    'Rating': [4.2, 4.5, 4.0, 4.3, 3.8],
+    'Number_of_Sales': [200, 100, 150, 80, 300]
+}
+
+df = pd.DataFrame(data)
+print(df)
+
+# Select numerical columns
+X = df[['Price', 'Rating', 'Number_of_Sales']]
+
+# Generate dendrogram
+Z = linkage(X, method='ward')
+
+dendrogram(Z, labels=df['Product_name'].values)
+
+plt.title("Dendrogram of Products")
+plt.xlabel("Product Name")
+plt.ylabel("Distance")
+plt.show()
+
+
+
+
+
+
+Q2. Write a Python program to create a DataFrame with the attributes Temperature, Humidity, Wind 
+Speed, Pressure, and Rainfall. Apply the following data transformation techniques and display 
+the transformed data:
+a)Min-MaxScaling 
+b)Standardization
+c) Normalization
+
+
+
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer
+
+data = {
+    'Temperature': [25, 30, 35, 40, 45],
+    'Humidity': [60, 65, 70, 75, 80],
+    'Wind Speed': [5, 10, 15, 20, 25],
+    'Pressure': [1000, 1005, 1010, 1015, 1020],
+    'Rainfall': [10, 20, 30, 40, 50]
+}
+
+df = pd.DataFrame(data)
+print("Original Data:")
+print(df)
+
+# a) Min-Max Scaling
+minmax = MinMaxScaler()
+print("\nMin-Max Scaling:")
+print(pd.DataFrame(minmax.fit_transform(df), columns=df.columns).round(2))
+
+# b) Standardization
+standard = StandardScaler()
+print("\nStandardization:")
+print(pd.DataFrame(standard.fit_transform(df), columns=df.columns).round(2))
+
+# c) Normalization
+normal = Normalizer()
+print("\nNormalization:")
+print(pd.DataFrame(normal.fit_transform(df), columns=df.columns).round(2))

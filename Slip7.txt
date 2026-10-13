@@ -1,0 +1,82 @@
+Q1. Consider the following dataset representing the number of students enrolled in different courses: 
+courses = ["BCA", "BBA", "B.Com", "B.Sc", "BA"]
+students = [60, 45, 75, 50, 35]
+Create a Bar Chart to visualize the number of students enrolled in each course. Use different bar 
+colors, add an appropriate title, and label both axes.
+
+
+
+import matplotlib.pyplot as plt
+
+# Dataset
+courses = ["BCA", "BBA", "B.Com", "B.Sc", "BA"]
+students = [60, 45, 75, 50, 35]
+
+# Create Bar Chart
+plt.bar(courses, students,
+        color=['red', 'blue', 'green', 'orange', 'purple'])
+
+# Add Title and Labels
+plt.title("Students Enrolled in Different Courses")
+plt.xlabel("Courses")
+plt.ylabel("Number of Students")
+
+# Display Chart
+plt.show()
+
+
+
+
+
+
+Q2. Implement a KNN classifier on the given Student dataset. Preprocess the data and classify 
+students into different performance categories. Evaluate the model using Accuracy and 
+Confusion Matrix.
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Create Student Dataset
+data = {
+    'Study_Hours': [2, 3, 4, 5, 6, 7, 8, 1, 9, 10],
+    'Attendance': [50, 55, 60, 65, 70, 75, 80, 40, 90, 95],
+    'Performance': [
+        'Low', 'Low', 'Medium', 'Medium', 'Medium',
+        'High', 'High', 'Low', 'High', 'High'
+    ]
+}
+
+df = pd.DataFrame(data)
+print("Student Dataset:")
+print(df)
+
+# Separate Input and Output
+X = df[['Study_Hours', 'Attendance']]
+y = df['Performance']
+
+# Split Dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=1
+)
+
+# Preprocess Data
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+# Create KNN Model
+model = KNeighborsClassifier(n_neighbors=3)
+model.fit(X_train, y_train)
+
+# Predict Performance
+y_pred = model.predict(X_test)
+
+# Evaluate Model
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
